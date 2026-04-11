@@ -157,3 +157,7 @@ $RECYCLE.BIN/
 
 # Docker
 **/docker-compose.override.yml
+
+# Claude
+CLAUDE.md
+**/CLAUDE.md
