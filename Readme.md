@@ -13,7 +13,13 @@ SlotEngine.API.sln
 ├── SlotEngine.Domain/           // Entities, value objects — zero deps
 ├── SlotEngine.Application/      // Use cases, DTOs, interfaces
 ├── SlotEngine.Infrastructure/   // EF Core, RNG, external services
-└── SlotEngine.API/              // Controllers, DI, Program.cs
+├── SlotEngine.API/              // Controllers, DI, Program.cs
+└── SlotEngine.Tests/
+    ├── SlotEngine.Domain.Tests          // value object invariants
+    ├── SlotEngine.Application.Tests     // handlers with fake IRng + in-memory repos
+    ├── SlotEngine.Infrastructure.Tests
+    ├── SlotEngine.Api.Tests             // WebApplicationFactory integration tests
+    └── SlotEngine.Simulation            // 10M-spin RTP harness, runs as a test
 ```
 
 ## Getting started
@@ -28,7 +34,8 @@ dotnet run --project SlotEngine.API
 - `SlotEngine.API` has `Program.cs`, `Controllers/`, and default `appsettings.json`.
 - Domain, Application, and Infrastructure projects created but empty (no entities, use cases, or EF setup yet).
 - No database, authentication, RNG, or paytable logic implemented.
-- No tests.
+- xUnit test projects scaffolded under `tests/` (one per layer, plus `SlotEngine.Simulation` RTP harness). No tests written yet.
+- Test projects target `net9.0` while source projects target `net8.0` — bump source TFMs or pin tests to `net8.0` before adding cross-project test code.
 
 ## Next steps
 - Define Domain entities (`Player`, `Game`, `SpinRecord`, `Transaction`) and value objects (`Coins`, `Bet`, `ReelStrip`).
