@@ -32,10 +32,13 @@ dotnet run --project SlotEngine.API
 ## Current State
 - Solution scaffolded with four Clean Architecture projects.
 - `SlotEngine.API` has `Program.cs`, `Controllers/`, and default `appsettings.json`.
-- Domain, Application, and Infrastructure projects created but empty (no entities, use cases, or EF setup yet).
-- No database, authentication, RNG, or paytable logic implemented.
+- **Domain layer:** `BaseEntity` abstract class (Id, CreatedAt, UpdatedAt, Status) and `RecordStatus` enum (Active, Inactive, Deleted) in `Domain/Common/`.
+- **Application layer:** Generic `IRepository<T>` interface in `Application/Abstractions/` with Add, Update, GetById, GetAll, and soft-delete operations.
+- **Infrastructure layer:** Generic `Repository<T>` EF Core implementation in `Infrastructure/Persistence/Repositories/`. `AppDbContext` scaffolded. EF Core 8.0.11 added as dependency.
+- No game entities, use cases, authentication, RNG, or paytable logic implemented yet.
 - xUnit test projects scaffolded under `tests/` (one per layer, plus `SlotEngine.Simulation` RTP harness). No tests written yet.
 - Test projects target `net9.0` while source projects target `net8.0` — bump source TFMs or pin tests to `net8.0` before adding cross-project test code.
+- **Known issue:** Solution file references test projects at `tests/` but they live at `SlotEngine.Tests/` — fix sln paths before full solution build.
 
 ## Next steps
 - Define Domain entities (`Player`, `Game`, `SpinRecord`, `Transaction`) and value objects (`Coins`, `Bet`, `ReelStrip`).
