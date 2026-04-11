@@ -108,13 +108,8 @@ publish/
 *.azurePubxml
 
 # ===== App settings & secrets =====
-# Ignore all environment-specific appsettings (keep base appsettings.json tracked)
+appsettings.json
 appsettings.*.json
-!appsettings.json
-appsettings.Development.json
-appsettings.Production.json
-appsettings.Staging.json
-appsettings.Local.json
 secrets.json
 *.secrets.json
 
