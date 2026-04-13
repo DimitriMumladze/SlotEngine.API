@@ -34,7 +34,7 @@ dotnet run --project SlotEngine.API
 - `SlotEngine.API` has `Program.cs`, `Controllers/`, and default `appsettings.json`.
 - **Domain layer:** `BaseEntity` abstract class (Id, CreatedAt, UpdatedAt, Status) and `RecordStatus` enum (Active, Inactive, Deleted) in `Domain/Common/`.
 - **Application layer:** Generic `IRepository<T>` interface in `Application/Abstractions/` with Add, Update, GetById, GetAll, and soft-delete operations.
-- **Infrastructure layer:** Generic `Repository<T>` EF Core implementation in `Infrastructure/Persistence/Repositories/`. `AppDbContext` scaffolded. EF Core 8.0.11 added as dependency.
+- **Infrastructure layer:** Generic `Repository<T>` EF Core implementation in `Infrastructure/Persistence/Repositories/`. `AppDbContext` scaffolded and registered via `AddInfrastructure` DI extension using SQL Server provider (`DefaultConnection` from `appsettings.json`). EF Core 8.0.11 + `Microsoft.EntityFrameworkCore.SqlServer` added as dependencies.
 - No game entities, use cases, authentication, RNG, or paytable logic implemented yet.
 - xUnit test projects scaffolded under `tests/` (one per layer, plus `SlotEngine.Simulation` RTP harness). No tests written yet.
 - Test projects target `net9.0` while source projects target `net8.0` — bump source TFMs or pin tests to `net8.0` before adding cross-project test code.
@@ -42,6 +42,5 @@ dotnet run --project SlotEngine.API
 
 ## Next steps
 - Define Domain entities (`Player`, `Game`, `SpinRecord`, `Transaction`) and value objects (`Coins`, `Bet`, `ReelStrip`).
-- Wire up EF Core `DbContext` in Infrastructure.
 - Add first use case: `Spin` in Application.
 - Expose `/api/spin` endpoint in API layer.
