@@ -32,7 +32,7 @@ dotnet run --project SlotEngine.API
 ## Current State
 - Solution scaffolded with four Clean Architecture projects.
 - `SlotEngine.API` has `Program.cs`, `Controllers/`, and default `appsettings.json`.
-- **Domain layer:** `BaseEntity` abstract class (Id, CreatedAt, UpdatedAt, Status) and `RecordStatus` enum (Active, Inactive, Deleted) in `Domain/Common/`.
+- **Domain layer:** `BaseEntity` abstract class (Id, CreatedAt, UpdatedAt, Status) and `RecordStatus` enum (Active, Inactive, Deleted) in `Domain/Common/`. Value objects `Coins` (long-backed, non-negative, arithmetic operators) and `Bet` (amount + line count, validates amount is multiple of lines) in `Domain/ValueObjects/`. `SymbolType` enum (Normal, Wild, Scatter, Bonus) in `Domain/Enums/`. `Player` entity with `Username` and `Balance`, exposing `DebitBet(Bet)` / `CreditWin(Coins)`. Exceptions `InsufficientBalanceException` and `InvalidBetException` in `Domain/Exceptions/`.
 - **Application layer:** Generic `IRepository<T>` interface in `Application/Abstractions/` with Add, Update, GetById, GetAll, and soft-delete operations.
 - **Infrastructure layer:** Generic `Repository<T>` EF Core implementation in `Infrastructure/Persistence/Repositories/`. `AppDbContext` scaffolded and registered via `AddInfrastructure` DI extension using SQL Server provider (`DefaultConnection` from `appsettings.json`). EF Core 8.0.11 + `Microsoft.EntityFrameworkCore.SqlServer` added as dependencies.
 - No game entities, use cases, authentication, RNG, or paytable logic implemented yet.
