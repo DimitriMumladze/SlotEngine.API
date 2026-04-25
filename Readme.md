@@ -30,17 +30,32 @@ dotnet run --project SlotEngine.API
 ```
 
 ## Current State
-- Solution scaffolded with four Clean Architecture projects.
-- `SlotEngine.API` has `Program.cs`, `Controllers/`, and default `appsettings.json`.
-- **Domain layer:** `BaseEntity` abstract class (Id, CreatedAt, UpdatedAt, Status) and `RecordStatus` enum (Active, Inactive, Deleted) in `Domain/Common/`. Value objects `Coins` (long-backed, non-negative, arithmetic operators) and `Bet` (amount + line count, validates amount is multiple of lines) in `Domain/ValueObjects/`. `SymbolType` enum (Normal, Wild, Scatter, Bonus) in `Domain/Enums/`. `Player` entity with `Username` and `Balance`, exposing `DebitBet(Bet)` / `CreditWin(Coins)`. Exceptions `InsufficientBalanceException` and `InvalidBetException` in `Domain/Exceptions/`.
-- **Application layer:** Generic `IRepository<T>` interface in `Application/Abstractions/` with Add, Update, GetById, GetAll, and soft-delete operations.
-- **Infrastructure layer:** Generic `Repository<T>` EF Core implementation in `Infrastructure/Persistence/Repositories/`. `AppDbContext` scaffolded and registered via `AddInfrastructure` DI extension using SQL Server provider (`DefaultConnection` from `appsettings.json`). EF Core 8.0.11 + `Microsoft.EntityFrameworkCore.SqlServer` added as dependencies.
-- No game entities, use cases, authentication, RNG, or paytable logic implemented yet.
-- xUnit test projects scaffolded under `tests/` (one per layer, plus `SlotEngine.Simulation` RTP harness). No tests written yet.
-- Test projects target `net9.0` while source projects target `net8.0` — bump source TFMs or pin tests to `net8.0` before adding cross-project test code.
-- **Known issue:** Solution file references test projects at `tests/` but they live at `SlotEngine.Tests/` — fix sln paths before full solution build.
 
-## Next steps
-- Define Domain entities (`Player`, `Game`, `SpinRecord`, `Transaction`) and value objects (`Coins`, `Bet`, `ReelStrip`).
-- Add first use case: `Spin` in Application.
-- Expose `/api/spin` endpoint in API layer.
+**Day 2 of the [14-day backend schedule](../Md's/slot-engine-2-week-backend-schedule.md) complete.** `dotnet build SlotEngine.Domain.csproj` → 0 warnings, 0 errors.
+
+- **Solution** — four Clean Architecture projects + five test projects (`Domain.Tests`, `Application.Tests`, `Infrastructure.Tests`, `Api.Tests`, `Simulation`). `SlotEngine.API` has `Program.cs`, `Controllers/`, default `appsettings.json`.
+- **Generic foundations** — `BaseEntity` (Id, CreatedAt, UpdatedAt, Status) and `RecordStatus` enum (Active, Inactive, Deleted) in `Domain/Common/`. Generic `IRepository<T>` in `Application/Abstractions/` with Add, Update, GetById, GetAll, and soft-delete. `Repository<T>` EF Core implementation in `Infrastructure/Persistence/Repositories/`. `AppDbContext` scaffolded, registered via `AddInfrastructure` DI extension using SQL Server (`DefaultConnection` from `appsettings.json`). EF Core 8.0.11 + `Microsoft.EntityFrameworkCore.SqlServer` as dependencies.
+- **Day 1 — Domain primitives**
+  - `Coins` (long-backed, non-negative, arithmetic + comparison operators) and `Bet` (amount + line count, validates amount is multiple of lines) in `Domain/ValueObjects/`.
+  - `SymbolType` enum (Normal, Wild, Scatter, Bonus) in `Domain/Enums/`.
+  - `Player` entity in `Domain/Entities/` with `Username` and `Balance`, exposing `DebitBet(Bet)` / `CreditWin(Coins)`.
+  - `InsufficientBalanceException` and `InvalidBetException` in `Domain/Exceptions/`.
+- **Day 2 — Reel math primitives** (all in `Domain/ValueObjects/`)
+  - `ReelStrip` — immutable `IReadOnlyList<int>` of symbol ids, wrap-safe `At(index)`.
+  - `ReelSet` — non-empty collection of strips, indexer, `ReelCount`.
+  - `Payline` — row-per-reel indices, validates non-negative.
+  - `PaytableEntry` (readonly record struct) + `Paytable` with nested `symbolId → matchCount → multiplier` lookup; `Multiplier(...)` returns 0 on miss.
+- **Known issues / outstanding tech debt**
+  - Test projects target `net9.0` while source projects target `net8.0` — bump source TFMs or pin tests to `net8.0` before adding cross-project test code.
+  - Solution file references test projects at `tests/` but they live at `SlotEngine.Tests/` — fix sln paths before full solution build.
+
+## Next steps (per [backend schedule](../Md's/slot-engine-2-week-backend-schedule.md))
+
+- **Day 3** — `IRng` abstraction, `ReelSpinner`, `GridBuilder`, pure `SpinEvaluator` + handler tests with `FakeRng`.
+- **Day 4** — RTP simulator (10M spins) with `CryptoRng`; tune reel strips to 94–96% RTP, 20–35% hit frequency.
+- **Day 5** — `Game` / `GameConfigVersion` / `SpinRecord` / `Transaction` entities, EF configurations, first migration.
+- **Day 6** — `IUnitOfWork` + entity-specific repositories, DI wiring.
+- **Day 7** — MediatR + FluentValidation + `SpinHandler` + `/api/spin` endpoint (idempotent via `clientSpinId`).
+- **Days 8–14** — CORS, JWT auth, admin API (players, versioned config, simulate, audit), rate limiting, exception middleware, healthcheck, smoke test.
+
+For the full plan and the parallel frontend track, see the [Master 2-Week Schedule](../Md's/slot-engine-2-week-schedule.md).
