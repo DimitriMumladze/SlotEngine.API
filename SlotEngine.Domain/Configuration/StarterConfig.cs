@@ -12,9 +12,9 @@ public static class StarterConfig
 
     public static ReelSet BuildReelSet() => new(new[]
     {
-        new ReelStrip(new[] { 1, 3, 2, 5, 1, 4, 2, 7, 3, 1, 6, 2, 4, 8, 5, 1, 9, 3, 2, 6, 4, 1, 5, 7, 3, 2, 8, 4, 6, 0 }),
-        new ReelStrip(new[] { 2, 1, 4, 3, 6, 1, 2, 5, 8, 3, 1, 4, 2, 7, 5, 3, 1, 9, 6, 2, 4, 1, 8, 5, 3, 7, 2, 4, 6, 0 }),
-        new ReelStrip(new[] { 3, 2, 1, 5, 4, 2, 1, 7, 6, 3, 1, 2, 5, 4, 8, 1, 2, 9, 3, 6, 1, 4, 5, 3, 2, 7, 4, 8, 6, 0 })
+        new ReelStrip(new[] { 1, 2, 1, 3, 2, 1, 4, 2, 5, 1, 3, 2, 1, 4, 8, 2, 1, 6, 3, 9, 2, 4, 3, 1, 5, 7, 2, 4, 3, 0 }),
+        new ReelStrip(new[] { 2, 1, 3, 1, 4, 2, 1, 3, 2, 5, 1, 4, 2, 1, 8, 3, 2, 9, 1, 4, 6, 2, 3, 1, 5, 4, 2, 7, 3, 0 }),
+        new ReelStrip(new[] { 3, 1, 2, 5, 1, 4, 2, 3, 1, 6, 2, 4, 1, 7, 2, 3, 1, 9, 4, 2, 1, 5, 3, 8, 2, 1, 4, 3, 2, 0 })
     });
 
     public static IReadOnlyList<Payline> BuildPaylines() => new[]
@@ -28,15 +28,15 @@ public static class StarterConfig
 
     public static Paytable BuildPaytable() => new(new[]
     {
-        new PaytableEntry(WildSymbolId, 3, 500),
+        new PaytableEntry(WildSymbolId, 3, 600),
         new PaytableEntry(1, 3, 5),
         new PaytableEntry(2, 3, 8),
-        new PaytableEntry(3, 3, 10),
-        new PaytableEntry(4, 3, 12),
-        new PaytableEntry(5, 3, 20),
-        new PaytableEntry(6, 3, 25),
-        new PaytableEntry(7, 3, 50),
-        new PaytableEntry(8, 3, 75),
-        new PaytableEntry(9, 3, 200)
+        new PaytableEntry(3, 3, 18),
+        new PaytableEntry(4, 3, 30),
+        new PaytableEntry(5, 3, 80),
+        new PaytableEntry(6, 3, 200),
+        new PaytableEntry(7, 3, 250),
+        new PaytableEntry(8, 3, 350),
+        new PaytableEntry(9, 3, 450)
     });
 }

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\SlotEngine.Application\SlotEngine.Application.csproj" />
     <ProjectReference Include="..\..\SlotEngine.Domain\SlotEngine.Domain.csproj" />
+    <ProjectReference Include="..\..\SlotEngine.Infrastructure\SlotEngine.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
